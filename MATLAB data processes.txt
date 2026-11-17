@@ -1,0 +1,44 @@
+runtime = 40; %sec
+interval = 0.5; %sec
+timestep = 0.05; %sec, simulation speed in seconds per calculation.
+directionHold = 5; %holds a direction value for x number of data.
+
+%variable calculations.
+NumberOfInput = runtime / interval;
+repelemFactor = interval/timestep;
+NumberOfOutput = runtime/timestep;
+
+%random seed value
+rng(0);
+
+%Generate sign values for the scalar values, including 0 thrust
+%areas. Then the duration of holding that direction is applied.
+vector = randi([-1,1], [NumberOfInput/directionHold,1]);
+direction = repelem(vector, directionHold, 1);
+
+%Generate random scalar values and writes it to a .txt file
+scalar = randi([0,50],[NumberOfInput, 1]);
+
+%Applies direction vector to scalar. Then stores it to a .txt file.
+thrustVector = direction .* scalar;
+writematrix(thrustVector, "random-input.txt");
+
+%reads the output file and import it, use your actual file name inside the brackets.
+rawOutput = readmatrix("EXAMPLEtxt");
+
+%initialize the MATLAB plots
+cla
+clf
+hold("on")
+
+%expands input data only for MATLAB use, so that timestep can be shown as
+%0.05s instead of interval (0.5s)
+input = repelem(thrustVector, repelemFactor, 1);
+
+%in case that the rawOutput file has more data points, but usually it
+%does not.
+output = rawOutput(1:(NumberOfOutput), 1);
+
+%creates iddata with input and output and timestep of 0.05s
+y1 = iddata(output, input, timestep);
+plot(y1)

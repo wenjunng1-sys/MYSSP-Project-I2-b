@@ -1,0 +1,18 @@
+NumberOfOutput = 400;
+timestep = 0.05; %sec, minecraft’s simulation speed in seconds per calculation.
+
+%initialize the MATLAB plots
+cla
+clf
+hold("on")
+
+%reads the output file from Minecraft and import it
+rawOutput = readmatrix("EXAMPLE.txt");
+
+%in case that the rawOutput file has more data points, but usually it
+%does not.
+output = rawOutput(1:(NumberOfOutput), 1);
+
+%creates iddata with input and output and timestep of 0.05s
+y1 = iddata(output, [], timestep);
+plot(y1)
