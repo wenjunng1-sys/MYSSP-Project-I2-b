@@ -1,15 +1,21 @@
+--make sure the gimbal sensor is to the right of the computer--
 local gimbal = peripheral.wrap("right")
-local CW = peripheral.wrap("Create_RotationSpeedController_5")
-local CCW = peripheral.wrap("Create_RotationSpeedController_4")
+local CW = peripheral.wrap("Create_RotationSpeedController_number")
+local CCW = peripheral.wrap("Create_RotationSpeedController_number")
+--Rename 'Create_RotationSpeedController_number' exactly the peripheral name of the connected rotation speed controllers.
+--CW means clockwise, and it must connect to the propeller that produces a counterclockwise moment, same for CCW which mean Counterclockwise.
 
 local integral = 0
 local lastError = 0
 local lasttarget = 0
 local Oldtime = 0
 
+--This is where you enter your PID values.
 local Kp = 2.2
 local Kd = 2.8
 local Ki = 0
+
+--DO NOT TOUCH ANYTHING BELOW HERE, UNLESS YOU UNDERSTAND WHAT IT IS DOING.
 
 while true do
 -- local Newtime = os.epoch('utc')
@@ -40,16 +46,6 @@ else
  CCW.setTargetSpeed(0)
 
 end
-
---print(correction)
---print(Newtime - Oldtime)
-
---Oldtime = Newtime
 lastError = newError
-
 sleep(0)
---might replace sleep function
---os.pullEvent("tick") 
-
-
 end
